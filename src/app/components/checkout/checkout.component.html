@@ -1,0 +1,65 @@
+<div class="checkout-container">
+    <div class="checkout-header">
+        <h2>Review Order</h2>
+        <p>Confirm your items before proceeding to shipment</p>
+    </div>
+
+    <div class="alert alert-warning" *ngIf="cart.products().length === 0">
+        <div class="alert-content">
+            <span class="icon">🛒</span>
+            <div>
+                <strong>Your cart is empty</strong>
+                <p>Looks like you haven't added anything yet.</p>
+            </div>
+        </div>
+        <a routerLink="/products" class="btn btn-primary">Return to Store</a>
+    </div>
+
+    <div class="checkout-card" *ngIf="cart.products().length > 0">
+        <div class="table-responsive">
+            <table class="table modern-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-right">Price</th>
+                        <th class="text-right">Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of cart.products()" class="cart-row">
+                        <td>
+                            <div class="item-name">{{item.name}}</div>
+                        </td>
+                        <td class="text-center">
+                            <span class="qty-badge">{{item.count}}</span>
+                        </td>
+                        <td class="text-right price-cell">{{item.price | currency}}</td>
+                        <td class="text-right total-cell">{{(item.price * item.count) | currency}}</td>
+                        <td class="text-center">
+                            <button (click)="remove(item.id)" class="btn-icon remove-btn" title="Remove Item">
+                                ✕
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="checkout-summary">
+            <div class="summary-row grand-total">
+                <span>Total Amount:</span>
+                <span class="total-value">{{cart.totalAmount | currency}}</span>
+            </div>
+
+            <div class="checkout-actions">
+                <a class="btn btn-default" routerLink="/products">Continue Shopping</a>
+                <a class="btn btn-success checkout-proceed" routerLink="/placeorder">
+                    Place Order
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

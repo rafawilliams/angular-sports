@@ -1,0 +1,106 @@
+<div class="order-container">
+    <div class="order-header">
+        <h2>Check out now</h2>
+        <p>Please enter your details, and we'll ship your goods right away!</p>
+    </div>
+
+    <div class="alert alert-danger error-alert" *ngIf="orderError">
+        <div class="error-content">
+            <span class="icon">⚠️</span>
+            <div>
+                <strong>Processing Failed</strong>
+                <p>{{orderError.message || 'Error processing your order.'}}</p>
+            </div>
+        </div>
+    </div>
+
+    <form #shippingForm="ngForm" (ngSubmit)="sendOrder()" class="order-form-card" novalidate>
+        <div class="form-section">
+            <h3 class="section-title">
+                <span class="step-num">1</span> Ship to
+            </h3>
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input name="name" class="modern-input" placeholder="e.g. John Doe" [(ngModel)]="order.name" required
+                    #name="ngModel" [class.is-invalid]="name.invalid && name.touched" />
+                <div class="error-msg" *ngIf="name.invalid && name.touched">Please enter a name</div>
+            </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="form-section">
+            <h3 class="section-title">
+                <span class="step-num">2</span> Delivery Address
+            </h3>
+
+            <div class="form-group">
+                <label>Street Address</label>
+                <input name="street" class="modern-input" placeholder="123 Main St, Apt 4" [(ngModel)]="order.street"
+                    required #street="ngModel" [class.is-invalid]="street.invalid && street.touched" />
+                <div class="error-msg" *ngIf="street.invalid && street.touched">Please enter a street address</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label>City</label>
+                    <input name="city" class="modern-input" placeholder="New York" [(ngModel)]="order.city" required
+                        #city="ngModel" [class.is-invalid]="city.invalid && city.touched" />
+                    <div class="error-msg" *ngIf="city.invalid && city.touched">Required</div>
+                </div>
+
+                <div class="form-group half">
+                    <label>State / Province</label>
+                    <input name="state" class="modern-input" placeholder="NY" [(ngModel)]="order.state" required
+                        #state="ngModel" [class.is-invalid]="state.invalid && state.touched" />
+                    <div class="error-msg" *ngIf="state.invalid && state.touched">Required</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label>ZIP / Postal Code</label>
+                    <input name="zip" class="modern-input" placeholder="10001" [(ngModel)]="order.zip" required
+                        #zip="ngModel" [class.is-invalid]="zip.invalid && zip.touched" />
+                    <div class="error-msg" *ngIf="zip.invalid && zip.touched">Required</div>
+                </div>
+
+                <div class="form-group half">
+                    <label>Country</label>
+                    <select name="country" class="modern-input" [(ngModel)]="order.country" required #country="ngModel"
+                        [class.is-invalid]="country.invalid && country.touched">
+                        <option value="" disabled selected>Select a country</option>
+                        <option value="US">United States</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="CA">Canada</option>
+                        <option value="EU">European Union</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                    <div class="error-msg" *ngIf="country.invalid && country.touched">Required</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="form-section">
+            <h3 class="section-title">
+                <span class="step-num">3</span> Options
+            </h3>
+
+            <label class="custom-checkbox">
+                <input name="giftwrap" type="checkbox" [(ngModel)]="order.giftwrap" />
+                <span class="checkmark"></span>
+                <span class="checkbox-label">Gift wrap these items (+$5.00)</span>
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" [disabled]="shippingForm.invalid || submitted" class="btn btn-primary submit-btn">
+                <span>{{submitted ? 'Processing...' : 'Complete Order'}}</span>
+                <span class="lock-icon" *ngIf="!submitted">🔒</span>
+            </button>
+        </div>
+    </form>
+</div>

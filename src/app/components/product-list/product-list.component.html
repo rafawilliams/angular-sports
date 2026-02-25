@@ -1,0 +1,64 @@
+<div class="store-layout" *ngIf="!error">
+    <!-- Sidebar Sidebar -->
+    <aside class="sidebar">
+        <h3 class="sidebar-title">Categories</h3>
+        <div class="category-list">
+            <button (click)="selectCategory(null)" class="category-btn" [class.active]="selectedCategory === null">
+                All Products
+            </button>
+
+            <button *ngFor="let cat of categories" (click)="selectCategory(cat)" class="category-btn"
+                [class.active]="selectedCategory === cat">
+                {{cat}}
+            </button>
+        </div>
+    </aside>
+
+    <!-- Product Grid -->
+    <section class="products-container">
+        <header class="section-header">
+            <h2>{{selectedCategory || 'Our Collection'}}</h2>
+            <span class="product-count">{{filteredProducts.length}} items found</span>
+        </header>
+
+        <div class="product-grid">
+            <article class="product-card" *ngFor="let item of filteredProducts">
+                <div class="card-header">
+                    <span class="category-badge">{{item.category}}</span>
+                    <div class="price-tag">{{item.price | currency}}</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="product-title">{{item.name}}</h3>
+                    <p class="product-desc">{{item.description}}</p>
+                </div>
+                <div class="card-footer">
+                    <button (click)="addProductToCart(item)" class="btn btn-primary add-auto-btn">
+                        <span>Add to Cart</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                    </button>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>
+
+<!-- Error State -->
+<div class="alert alert-danger error-alert" *ngIf="error">
+    <div class="error-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <div>
+            <strong>Connection Error</strong>
+            <p>{{error.message || 'The Products data was not loaded.'}}</p>
+        </div>
+    </div>
+</div>

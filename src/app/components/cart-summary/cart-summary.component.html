@@ -1,0 +1,13 @@
+<div class="cart-wrapper">
+    <div class="cart-info">
+        <div class="cart-label">Your Cart</div>
+        <div class="cart-stats">
+            <span class="badge">{{cart.itemCount}}</span>
+            <span class="cart-total">{{cart.totalAmount | currency}}</span>
+        </div>
+    </div>
+    <a routerLink="/checkout" class="btn btn-primary checkout-btn">
+        Checkout
+        <span class="arrow">→</span>
+    </a>
+</div>

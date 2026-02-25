@@ -1,0 +1,96 @@
+[33mΓ¥»[39m Building...
+[32mΓ£ö[39m Building...
+Application bundle generation failed. [2.270 seconds] - 2026-02-24T22:45:58.086Z
+
+Γû▓ [WARNING] Unexpected ";" [plugin angular-compiler] [css-syntax-error]
+
+    angular:styles/component:css;b4a02c13357a975a76be06a826a9443b3f979c4c6d0454d58b3f5633d0abf210;C:/apps/apps/angular-sports/src/app/components/cart-summary/cart-summary.component.html:2:62:
+      2 Γöé     .navbar-right {float: right !important; margin-right: 5px};
+        Γò╡                                                               ^
+
+
+Γû▓ [WARNING] Unexpected ";" [plugin angular-compiler] [css-syntax-error]
+
+    angular:styles/component:css;b4a02c13357a975a76be06a826a9443b3f979c4c6d0454d58b3f5633d0abf210;C:/apps/apps/angular-sports/src/app/components/cart-summary/cart-summary.component.html:3:37:
+      3 Γöé     .navbar-text {margin-right: 10px};
+        Γò╡                                      ^
+
+
+X [ERROR] NG2008: Could not find stylesheet file './cart-summary.component.css'. [plugin angular-compiler]
+
+    src/app/components/cart-summary/cart-summary.component.ts:11:16:
+      11 Γöé     styleUrls: ['./cart-summary.component.css']
+         Γò╡                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG2008: Could not find stylesheet file './checkout.component.css'. [plugin angular-compiler]
+
+    src/app/components/checkout/checkout.component.ts:11:16:
+      11 Γöé     styleUrls: ['./checkout.component.css']
+         Γò╡                 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG2008: Could not find stylesheet file './place-order.component.css'. [plugin angular-compiler]
+
+    src/app/components/place-order/place-order.component.ts:13:16:
+      13 Γöé     styleUrls: ['./place-order.component.css']
+         Γò╡                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG2008: Could not find stylesheet file './product-list.component.css'. [plugin angular-compiler]
+
+    src/app/components/product-list/product-list.component.ts:11:16:
+      11 Γöé     styleUrls: ['./product-list.component.css']
+         Γò╡                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG2008: Could not find stylesheet file './thank-you.component.css'. [plugin angular-compiler]
+
+    src/app/components/thank-you/thank-you.component.ts:9:16:
+      9 Γöé     styleUrls: ['./thank-you.component.css']
+        Γò╡                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "../fonts/glyphicons-halflings-regular.eot" [plugin angular-css-resource]
+
+    public/bootstrap.css:266:11:
+      266 Γöé   src: url('../fonts/glyphicons-halflings-regular.eot');
+          Γò╡            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "../fonts/glyphicons-halflings-regular.eot?#iefix" [plugin angular-css-resource]
+
+    public/bootstrap.css:267:11:
+      267 Γöé   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') fo...
+          Γò╡            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "../fonts/glyphicons-halflings-regular.woff2" [plugin angular-css-resource]
+
+    public/bootstrap.css:267:96:
+      267 Γöé ...pe'), url('../fonts/glyphicons-halflings-regular.woff2') forma...
+          Γò╡              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "../fonts/glyphicons-halflings-regular.woff" [plugin angular-css-resource]
+
+    public/bootstrap.css:267:164:
+      267 Γöé ...f2'), url('../fonts/glyphicons-halflings-regular.woff') format...
+          Γò╡              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "../fonts/glyphicons-halflings-regular.ttf" [plugin angular-css-resource]
+
+    public/bootstrap.css:267:230:
+      267 Γöé ...ff'), url('../fonts/glyphicons-halflings-regular.ttf') format(...
+          Γò╡              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular" [plugin angular-css-resource]
+
+    public/bootstrap.css:267:299:
+      267 Γöé ...pe'), url('../fonts/glyphicons-halflings-regular.svg#glyphicon...
+          Γò╡              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+

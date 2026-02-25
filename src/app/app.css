@@ -1,0 +1,49 @@
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--surface-border);
+    padding: 1rem 0;
+    transition: var(--transition);
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: -0.05em;
+}
+
+.logo-icon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 10px var(--primary-glow));
+}
+
+.text-primary {
+    color: var(--primary);
+}
+
+.app-main {
+    max-width: 1280px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    min-height: calc(100vh - 140px);
+}
