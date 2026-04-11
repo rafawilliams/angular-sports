@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "npm" # Cambia según tu lenguaje: pip, maven, gradle, etc.
+    directory: "/" # Ubicación del package.json o requirements.txt
+    schedule:
+      interval: "weekly" # Frecuencia de revisión: daily, weekly, monthly
+    open-pull-requests-limit: 10
+    # Automerge para actualizaciones de seguridad
+    labels:
+      - "dependencies"
+      - "security"
