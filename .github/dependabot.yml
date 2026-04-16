@@ -1,11 +1,34 @@
 version: 2
 updates:
-  - package-ecosystem: "npm" # Cambia según tu lenguaje: pip, maven, gradle, etc.
-    directory: "/" # Ubicación del package.json o requirements.txt
+  # Actualizar dependencias de npm
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: "weekly" # Frecuencia de revisión: daily, weekly, monthly
+      interval: "weekly"
     open-pull-requests-limit: 10
-    # Automerge para actualizaciones de seguridad
+    # Agrupar actualizaciones menores
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "patch"
     labels:
       - "dependencies"
-      - "security"
+      - "automated"
+    # Configuración específica para Node.js
+    versioning-strategy: auto
+    # Ignorar algunas dependencias si es necesario
+    # ignore:
+    #   - dependency-name: "express"
+    #     versions: ["5.x"]
+  
+  # Actualizar GitHub Actions también
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

@@ -2,7 +2,7 @@ name: Notify on Failure
 
 on:
   workflow_run:
-    workflows: ["Dependabot Auto-Fix & Merge"]
+    workflows: ["Auto-fix Security Vulnerabilities"]
     types: [completed]
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
           script: |
             const pr_number = github.event.workflow_run.pull_requests[0]?.number;
             if (pr_number) {
-              github.rest.issues.createComment({
+              await github.rest.issues.createComment({
                 issue_number: pr_number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,

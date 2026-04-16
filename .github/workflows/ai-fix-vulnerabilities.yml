@@ -6,44 +6,41 @@ on:
 
 jobs:
   ai-fix:
-    if: github.actor == 'dependabot[bot]'
+    if: ${{ github.actor == 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.PAT_TOKEN }} # Personal Access Token con permisos
-      
+
       - name: Setup environment
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          
+          node-version: '22'
+
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Run tests and capture errors
         id: test
-        run: |
-          npm test 2>&1 | tee test_output.txt
+        run: npm test -- --watch=false 2>&1 | tee test_output.txt
         continue-on-error: true
-        
+
       - name: AI-powered fix with Claude
         if: steps.test.outcome == 'failure'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          # Script Python que usa Claude API para analizar errores y proponer fixes
-          python .github/scripts/ai_fixer.py
-          
+        run: python .github/scripts/ai_fixer.py
+
       - name: Retry tests after AI fix
         if: steps.test.outcome == 'failure'
-        run: npm test
-        
+        run: npm test -- --watch=false
+
       - name: Commit AI fixes
         run: |
           git config --global user.name 'ai-fixer[bot]'
           git config --global user.email 'ai-fixer[bot]@users.noreply.github.com'
           git add .
           git diff --staged --quiet || git commit -m "fix: AI-generated fixes for test failures"
-          git push
+          git push origin HEAD:${{ github.head_ref }}
