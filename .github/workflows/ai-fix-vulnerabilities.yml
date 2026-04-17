@@ -15,7 +15,7 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }} # Personal Access Token con permisos
 
       - name: Setup environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
 
