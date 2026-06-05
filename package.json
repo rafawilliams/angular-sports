@@ -24,7 +24,7 @@
   "packageManager": "npm@11.7.0",
   "dependencies": {
     "@angular/common": "^21.2.14",
-    "@angular/compiler": "^21.2.14",
+    "@angular/compiler": "^22.0.0",
     "@angular/core": "^21.2.14",
     "@angular/forms": "^22.0.0",
     "@angular/platform-browser": "^21.2.14",
