@@ -23,12 +23,12 @@
   "private": true,
   "packageManager": "npm@11.7.0",
   "dependencies": {
-    "@angular/common": "^21.2.14",
+    "@angular/common": "^22.0.0",
     "@angular/compiler": "^21.2.14",
-    "@angular/core": "^21.2.14",
+    "@angular/core": "^22.0.0",
     "@angular/forms": "^22.0.0",
     "@angular/platform-browser": "^21.2.14",
-    "@angular/router": "^21.2.14",
+    "@angular/router": "^22.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
