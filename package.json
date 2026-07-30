@@ -33,11 +33,11 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@angular/build": "^22.0.2",
+    "@angular/build": "^22.0.9",
     "@angular/cli": "^21.2.12",
-    "@angular/compiler-cli": "^22.0.1",
+    "@angular/compiler-cli": "^22.0.8",
     "jsdom": "^29.1.1",
     "typescript": "~6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   }
 }
