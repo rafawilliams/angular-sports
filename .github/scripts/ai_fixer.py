@@ -19,7 +19,7 @@ import anthropic
 # Configuración
 # ---------------------------------------------------------------------------
 
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
 MAX_TOKENS = 8192
 
 # Extensiones y directorios que se incluyen como contexto
