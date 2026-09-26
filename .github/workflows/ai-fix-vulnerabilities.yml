@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   ai-fix:
     if: ${{ github.actor == 'dependabot[bot]' }}
@@ -12,7 +16,9 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: ${{ github.head_ref }}
-          token: ${{ secrets.PAT_TOKEN }} # Personal Access Token con permisos
+          # Workflows lanzados por Dependabot solo leen secretos de Dependabot; si PAT_TOKEN
+          # no está definido ahí, se usa el GITHUB_TOKEN (con los permisos declarados arriba).
+          token: ${{ secrets.PAT_TOKEN || github.token }}
 
       - name: Setup environment
         uses: actions/setup-node@v7
