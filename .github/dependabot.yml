@@ -22,10 +22,11 @@ updates:
       - "automated"
     # Configuración específica para Node.js
     versioning-strategy: auto
-    # Ignorar algunas dependencias si es necesario
-    # ignore:
-    #   - dependency-name: "express"
-    #     versions: ["5.x"]
+    # Principio 14: los majors de TypeScript se revisan a mano.
+    # @angular/build fija un rango de peer (p. ej. >=6.0 <6.1); typescript@7 rompió npm install.
+    ignore:
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
   
   # Actualizar GitHub Actions también
   - package-ecosystem: "github-actions"
