@@ -24,7 +24,7 @@ tests existente solo corre para Dependabot. Así llegó `typescript@7` a `master
 - [x] `ci.yml` escrito — prueba: el YAML parsea y los comandos son los de `package.json`.
 - [x] Los pasos pasan en local — prueba: `npm ci`, `ng build`, `ng test --watch=false` y `npm audit --omit=dev --audit-level=high` con exit 0.
 - [x] `rsc risk` + revisión según tier — prueba: tier y resultado registrados.
-- [ ] El workflow corre en verde en GitHub — prueba: run del PR en estado success.
+- [x] El workflow corre en verde en GitHub — prueba: run del PR en estado success.
 
 ## Evidence
 
@@ -43,6 +43,9 @@ tests existente solo corre para Dependabot. Así llegó `typescript@7` a `master
   - Aceptados sin cambio: tags `@v7` (convención del repo; fijar por SHA sería para todos los
     workflows), `npm ci --ignore-scripts` (sin probar), run duplicado en PRs de Dependabot con
     auto-fix.
+
+- GitHub (PR #90, run 41612736696): `build-test` pass en 26 s. Node 22.23.4 de la cache del runner;
+  `npm ci` 285 paquetes; build OK; «Test Files 8 passed (8)»; «found 0 vulnerabilities».
 
 ## Next
 
