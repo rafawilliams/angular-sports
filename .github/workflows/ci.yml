@@ -6,6 +6,11 @@ on:
     branches: [master]
   push:
     branches: [master]
+  # Auditoría semanal de master: detecta vulnerabilidades publicadas aunque no haya cambios.
+  # Un run fallido avisa por email al propietario (según sus ajustes de notificaciones).
+  schedule:
+    - cron: '0 7 * * 1' # lunes 07:00 UTC
+  workflow_dispatch:
 
 permissions:
   contents: read
