@@ -18,7 +18,7 @@ export class ProductListComponent implements OnInit {
     products: Product[] = [];
     categories: string[] = [];
     selectedCategory: string | null = null;
-    error: any = null;
+    error: { message?: string } | null = null;
 
     ngOnInit() {
         this.productService.getProducts().subscribe({

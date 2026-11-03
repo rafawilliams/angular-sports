@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductService, Order } from '../../services/product.service';
@@ -8,13 +8,13 @@ import { CartService } from '../../services/cart.service';
 @Component({
     selector: 'app-place-order',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [FormsModule],
     templateUrl: './place-order.component.html'
 })
 export class PlaceOrderComponent {
     order: Order = { name: '', street: '', city: '', state: '', zip: '', country: '', giftwrap: false, products: [] };
     submitted = false;
-    orderError: any = null;
+    orderError: { message?: string } | null = null;
 
     private productService = inject(ProductService);
     private cartService = inject(CartService);
@@ -26,7 +26,7 @@ export class PlaceOrderComponent {
         this.order.products = this.cartService.products();
 
         this.productService.sendOrder(this.order).subscribe({
-            next: (data) => {
+            next: () => {
                 this.cartService.clear();
                 this.router.navigateByUrl('/complete');
             },
