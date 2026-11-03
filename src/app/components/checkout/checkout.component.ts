@@ -4,16 +4,16 @@ import { RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 
 @Component({
-    selector: 'app-checkout',
-    standalone: true,
-    imports: [CommonModule, RouterLink],
-    templateUrl: './checkout.component.html',
-    styleUrls: ['./checkout.component.css']
+  selector: 'app-checkout',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './checkout.component.html',
+  styleUrls: ['./checkout.component.css'],
 })
 export class CheckoutComponent {
-    cart = inject(CartService);
+  cart = inject(CartService);
 
-    remove(id: string) {
-        this.cart.removeProduct(id);
-    }
+  remove(id: string) {
+    this.cart.removeProduct(id);
+  }
 }
