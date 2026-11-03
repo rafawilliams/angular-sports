@@ -185,6 +185,23 @@ describe('PlaceOrderComponent', () => {
     describe('accessibility', () => {
         const fields = ['name', 'street', 'city', 'state', 'zip', 'country'];
 
+        const componentStyles = (): string =>
+            Array.from(document.head.querySelectorAll('style'))
+                .map((style) => style.textContent ?? '')
+                .join('\n');
+
+        it('should load the component stylesheet', () => {
+            expect(componentStyles()).toContain('.custom-checkbox');
+        });
+
+        it('should show keyboard focus on the custom gift-wrap checkbox', () => {
+            const giftwrap = fixture.nativeElement.querySelector('[name="giftwrap"]') as HTMLInputElement;
+
+            expect(giftwrap.type).toBe('checkbox');
+            // Emulated encapsulation inserts [_ngcontent-*] attributes inside the selector.
+            expect(componentStyles()).toMatch(/\.custom-checkbox[^{]*input[^{]*:focus-visible[^{]*~[^{]*\.checkmark/);
+        });
+
         it.each(fields)('should associate a label with the %s control', (field) => {
             const host: HTMLElement = fixture.nativeElement;
             const control = host.querySelector(`[name="${field}"]`) as HTMLElement;

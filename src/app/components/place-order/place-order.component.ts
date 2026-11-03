@@ -9,7 +9,8 @@ import { CartService } from '../../services/cart.service';
     selector: 'app-place-order',
     standalone: true,
     imports: [FormsModule],
-    templateUrl: './place-order.component.html'
+    templateUrl: './place-order.component.html',
+    styleUrls: ['./place-order.component.css']
 })
 export class PlaceOrderComponent {
     order: Order = { name: '', street: '', city: '', state: '', zip: '', country: '', giftwrap: false, products: [] };
