@@ -49,9 +49,11 @@
   "catalogVersion": "4.0.0",
   "tier": null,
   "optOuts": [
+    "auto-update",
+    "knowledge-sync",
     "trunk-open"
   ],
-  "gitPermissions": true,
+  "gitPermissions": false,
   "onboarding": {
     "schemaVersion": 1,
     "acceptedPlanId": "eeeb8cadf77c7af0489d88b8b0239c498b57daf6baa7f7dd733f5d3e77b2041e",

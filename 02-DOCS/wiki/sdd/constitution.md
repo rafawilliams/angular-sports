@@ -5,12 +5,12 @@ description: Los principios no negociables que obedece cada fase rsc-sdd.
 tags: [sdd, constitution]
 timestamp: 2026-11-03T09:30:00Z
 topic: sdd
-version: v1.0.0
+version: v1.0.1
 ---
 
 # angular-sports — Constitution
 
-> Version: v1.0.0 · Ratified: 2026-11-03 · Last amended: 2026-11-03
+> Version: v1.0.1 · Ratified: 2026-11-03 · Last amended: 2026-11-03
 > Objetivo: mantener actualizada y segura una app Angular de deportes (tienda: catálogo, carrito,
 > checkout, pedido). Software · alcance small. Este archivo ratifica principios; la mecánica vive
 > en la configuración del repo y en `02-DOCS/wiki/stack/*` cuando exista.
@@ -101,3 +101,4 @@ Un cambio solo se entrega cuando se cumple TODO:
 |------|---------|--------|-----|
 | 2026-11-03 | draft | Borrador generado por `rsc onboard`. | El suelo SDD necesita una constitución; ratificarla es tarea de la fase `constitution`. |
 | 2026-11-03 | v1.0.0 | Ratificada la constitución inicial: 20 principios. Pendientes de implantar: 5 (angular-eslint), 12 (workflow de CI); 2 incumplido hoy por `typescript@7`. | Arranque del proyecto bajo rsc; ratificada tal cual por el propietario. |
+| 2026-11-03 | v1.0.1 | Nota de estado: el principio 2 se cumple desde `353d972` (`typescript ~6.0.3`). Sin cambio de principios. | Corrige la nota «incumplido hoy» de v1.0.0, señalada en la revisión de tier 2. |

@@ -23,7 +23,7 @@ devolver `master` al principio 2: Dependabot subió `typescript` a `~7.0.2`, fue
 - [x] `typescript` a `~6.0.3` — prueba: `npm install` sin `--force` termina sin ERESOLVE.
 - [x] `ng build` (producción) pasa — prueba: salida del build sin errores.
 - [x] `ng test` pasa — prueba: resumen de Vitest en verde.
-- [ ] `rsc risk` + revisión según tier — prueba: tier registrado y resultado de la revisión.
+- [x] `rsc risk` + revisión según tier — prueba: tier registrado y resultado de la revisión.
 - [ ] Push y PR abierto — prueba: URL del PR.
 
 ## Evidence
@@ -42,7 +42,14 @@ devolver `master` al principio 2: Dependabot subió `typescript` a `~7.0.2`, fue
 - `rsc risk`: tier 2 (clases harness y secrets por `.claude/*`, `CLAUDE.md` y
   `01-TOOLS/_TEMPLATE/.env.example`, todos generados por el instalador), 3 revisores, aprobación
   humana obligatoria. `package.json` / lockfile: clase default.
+- Revisión tier 2 (3 refuters, contexto fresco): 0 bloqueantes.
+  - Corrección: 1 nit (log de la constitución desfasado) → entrada v1.0.1.
+  - Seguridad: 2 should-fix (allow de `git push`/`gh pr create` commiteado; knowledge-sync
+    subiendo docs al remoto público) → `rsc git-permissions off`, `rsc knowledge-sync off`, rama
+    remota `rsc/knowledge` borrada. 1 nit (auto-update sin preguntar) → `.rsc/.no-auto-update`.
+  - Tests: 0 hallazgos. `npm ci` limpio desde `git archive HEAD`, `tsc -v` 6.0.3, 90/90, sin
+    `.skip`/`.only`, `tsc -p tsconfig.spec.json --noEmit` OK.
 
 ## Next
 
-Decidir con el propietario la revisión de tier 2; después push y PR.
+Push de la rama y PR; el merge lo aprueba el propietario (tier 2).
