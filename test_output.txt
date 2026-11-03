@@ -24,22 +24,22 @@ init-compiler.js                                           | init-compiler      
 
                                                            | Initial total                                           | 126.11 kB
 
-Application bundle generation complete. [2.334 seconds] - 2026-11-03T11:04:10.640Z
+Application bundle generation complete. [2.538 seconds] - 2026-11-03T11:04:02.145Z
 
 
 [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/angular-sports/angular-sports[39m
 
- [32m✓[39m [30m[45m sportsStore [49m[39m src/app/services/cart.service.spec.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 95[2mms[22m[39m
- [32m✓[39m [30m[45m sportsStore [49m[39m src/app/components/checkout/checkout.component.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 358[2mms[22m[39m
- [32m✓[39m [30m[45m sportsStore [49m[39m src/app/components/product-list/product-list.component.spec.ts [2m([22m[2m19 tests[22m[2m)[22m[33m 570[2mms[22m[39m
- [32m✓[39m [30m[45m sportsStore [49m[39m src/app/services/product.service.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 26[2mms[22m[39m
- [32m✓[39m [30m[45m sportsStore [49m[39m src/app/app.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 86[2mms[22m[39m
- [32m✓[39m [30m[45m sportsStore [49m[39m src/app/components/cart-summary/cart-summary.component.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 70[2mms[22m[39m
- [32m✓[39m [30m[45m sportsStore [49m[39m src/app/components/thank-you/thank-you.component.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
- [32m✓[39m [30m[45m sportsStore [49m[39m src/app/components/place-order/place-order.component.spec.ts [2m([22m[2m44 tests[22m[2m)[22m[33m 1176[2mms[22m[39m
+ [32m✓[39m [30m[45m sportsStore [49m[39m src/app/services/cart.service.spec.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 65[2mms[22m[39m
+ [32m✓[39m [30m[45m sportsStore [49m[39m src/app/components/checkout/checkout.component.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 412[2mms[22m[39m
+ [32m✓[39m [30m[45m sportsStore [49m[39m src/app/services/product.service.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m [30m[45m sportsStore [49m[39m src/app/components/product-list/product-list.component.spec.ts [2m([22m[2m19 tests[22m[2m)[22m[33m 695[2mms[22m[39m
+ [32m✓[39m [30m[45m sportsStore [49m[39m src/app/components/cart-summary/cart-summary.component.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 115[2mms[22m[39m
+ [32m✓[39m [30m[45m sportsStore [49m[39m src/app/components/thank-you/thank-you.component.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m [30m[45m sportsStore [49m[39m src/app/app.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 88[2mms[22m[39m
+ [32m✓[39m [30m[45m sportsStore [49m[39m src/app/components/place-order/place-order.component.spec.ts [2m([22m[2m44 tests[22m[2m)[22m[33m 1221[2mms[22m[39m
 
 [2m Test Files [22m [1m[32m8 passed[39m[22m[90m (8)[39m
 [2m      Tests [22m [1m[32m117 passed[39m[22m[90m (117)[39m
-[2m   Start at [22m 11:04:10
-[2m   Duration [22m 2.79s[2m (environment 61%, tests 21%, setup 11%, transform 4%, import 3%)[22m
+[2m   Start at [22m 11:04:02
+[2m   Duration [22m 3.04s[2m (environment 61%, tests 22%, setup 11%, import 3%, transform 3%)[22m
 
