@@ -7,7 +7,8 @@ import { CartService } from '../../services/cart.service';
     selector: 'app-checkout',
     standalone: true,
     imports: [CommonModule, RouterLink],
-    templateUrl: './checkout.component.html'
+    templateUrl: './checkout.component.html',
+    styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent {
     cart = inject(CartService);

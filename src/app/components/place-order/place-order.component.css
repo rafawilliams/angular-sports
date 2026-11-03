@@ -173,6 +173,12 @@
     box-shadow: 0 0 10px var(--primary-glow);
 }
 
+/* The native input is visually hidden: show keyboard focus on the visible box (WCAG 2.4.7). */
+.custom-checkbox input:focus-visible~.checkmark {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+}
+
 .checkmark:after {
     content: "";
     position: absolute;
