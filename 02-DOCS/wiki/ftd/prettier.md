@@ -24,14 +24,33 @@ ficheros de `src` difieren del formato.
 
 ## Checklist
 
-- [ ] Prettier instalado y una sola config — prueba: `--find-config-path` y `git status`.
-- [ ] `src` formateado — prueba: `prettier --check` exit 0.
-- [ ] Sin cambios de comportamiento — prueba: `ng lint`, `ng build`, `ng test --watch=false`; diff `-w` sin cambios de lógica.
+- [x] Prettier instalado y una sola config — prueba: `--find-config-path` y `git status`.
+- [x] `src` formateado — prueba: `prettier --check` exit 0.
+- [x] Sin cambios de comportamiento — prueba: `ng lint`, `ng build`, `ng test --watch=false`; diff `-w` sin cambios de lógica.
 - [ ] Paso en CI — prueba: run del PR en verde.
-- [ ] `rsc risk` + revisión según tier.
+- [x] `rsc risk` + revisión según tier.
 
 ## Evidence
 
+- Configuración: antes del cambio, `prettier --find-config-path` devolvía `package.json`, así que
+  `.prettierrc.json` se ignoraba. Antes de formatear, 32 de los 32 ficheros de `src` diferían.
+- `endOfLine: auto`: el repo tiene `core.autocrlf=true`. Una sonda CRLF dentro de `src` pasa con
+  la config del proyecto; la sonda se borró después.
+- Tras formatear: `format:check` exit 0, `ng lint` limpio, `ng test` 117/117.
+- Equivalencia compilada (build de producción de `master` 16f9d07 frente a la rama):
+  - `styles-*.css` byte-idéntico.
+  - El `main-*.js` formateado difiere en 3 líneas: `" Ship to "` → `" Ship to"`,
+    `" Delivery Address "` → `" Delivery Address"` y `" Options "` → `" Options"`. Son espacios
+    finales en un flex item de `.section-title` (`display:flex; gap`), que no se renderizan.
+- `rsc risk`: tier 2 (billing, ci, customer-data, orders).
+- Revisión con 3 refuters, 0 hallazgos:
+  - Corrección: sin choques con `.editorconfig` ni ESLint; glob portable entre Windows y Linux.
+    Pregunta: `.git-blame-ignore-revs` requiere mergear con merge commit (lo que el repo ya
+    hace); con squash o rebase cambia el SHA.
+  - Seguridad: solo prettier, de registry.npmjs.org, sin scripts de instalación.
+  - Tests: el gate falla con comillas dobles, mala indentación, HTML y CSS (exit 1) y pasa al
+    restaurar. Todo CRLF da exit 0; mezcla de CRLF y LF da exit 1. 117/117 desde la copia.
+
 ## Next
 
-`prettier --write`.
+Push y PR (mergear con merge commit, no squash).
