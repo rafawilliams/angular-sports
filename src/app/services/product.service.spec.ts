@@ -64,7 +64,6 @@ describe('ProductService', () => {
         it('should propagate HTTP errors to the subscriber', () => {
             let errorStatus = 0;
             service.getProducts().subscribe({
-                next: () => {},
                 error: (err) => (errorStatus = err.status),
             });
 
@@ -92,7 +91,7 @@ describe('ProductService', () => {
 
         it('should return the server response on success', () => {
             const serverResponse = { id: 'order-123', status: 'confirmed' };
-            let result: any;
+            let result: unknown;
             service.sendOrder(mockOrder).subscribe((data) => (result = data));
 
             const req = httpMock.expectOne(ORDERS_URL);
@@ -104,7 +103,6 @@ describe('ProductService', () => {
         it('should propagate HTTP errors to the subscriber', () => {
             let errorStatus = 0;
             service.sendOrder(mockOrder).subscribe({
-                next: () => {},
                 error: (err) => (errorStatus = err.status),
             });
 

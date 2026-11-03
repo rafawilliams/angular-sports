@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import type { CartLine } from './cart.service';
 
 export interface Product {
     id: string;
@@ -18,23 +19,23 @@ export interface Order {
     zip: string;
     country: string;
     giftwrap: boolean;
-    products: any[];
+    products: CartLine[];
 }
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProductService {
+    private http = inject(HttpClient);
+
     private dataUrl = 'http://localhost:4200/products';
     private orderUrl = 'http://localhost:4200/orders';
-
-    constructor(private http: HttpClient) { }
 
     getProducts(): Observable<Product[]> {
         return this.http.get<Product[]>(this.dataUrl);
     }
 
-    sendOrder(order: Order): Observable<any> {
-        return this.http.post<any>(this.orderUrl, order);
+    sendOrder(order: Order): Observable<unknown> {
+        return this.http.post<unknown>(this.orderUrl, order);
     }
 }

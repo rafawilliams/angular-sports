@@ -172,5 +172,73 @@ describe('PlaceOrderComponent', () => {
             const alert = fixture.nativeElement.querySelector('.alert-danger');
             expect(alert).toBeFalsy();
         });
+
+        it('should show the lock icon only while the order is not submitted', () => {
+            expect(fixture.nativeElement.querySelector('.lock-icon')).toBeTruthy();
+
+            component.submitted = true;
+            fixture.detectChanges();
+            expect(fixture.nativeElement.querySelector('.lock-icon')).toBeFalsy();
+        });
+    });
+
+    describe('accessibility', () => {
+        const fields = ['name', 'street', 'city', 'state', 'zip', 'country'];
+
+        it.each(fields)('should associate a label with the %s control', (field) => {
+            const host: HTMLElement = fixture.nativeElement;
+            const control = host.querySelector(`[name="${field}"]`) as HTMLElement;
+            const label = host.querySelector(`label[for="${control.id}"]`);
+
+            expect(control.id).toBe(`order-${field}`);
+            expect(label).toBeTruthy();
+            expect(label?.textContent?.trim()).not.toBe('');
+        });
+    });
+
+    describe('field validation messages', () => {
+        const requiredFields: [string, string][] = [
+            ['name', 'Please enter a name'],
+            ['street', 'Please enter a street address'],
+            ['city', 'Required'],
+            ['state', 'Required'],
+            ['zip', 'Required'],
+            ['country', 'Required'],
+        ];
+
+        const errorFor = (field: string): HTMLElement | null => {
+            const control = fixture.nativeElement.querySelector(`[name="${field}"]`) as HTMLElement;
+            return control.closest('.form-group')?.querySelector(':scope > .error-msg') ?? null;
+        };
+
+        beforeEach(async () => {
+            await fixture.whenStable();
+            fixture.detectChanges();
+        });
+
+        it.each(requiredFields)('should not show the %s error before the field is touched', (field) => {
+            expect(errorFor(field)).toBeFalsy();
+        });
+
+        it.each(requiredFields)('should show the %s error when touched and empty', (field, message) => {
+            const control = fixture.nativeElement.querySelector(`[name="${field}"]`) as HTMLElement;
+            control.dispatchEvent(new Event('blur'));
+            fixture.detectChanges();
+
+            expect(errorFor(field)?.textContent?.trim()).toBe(message);
+        });
+
+        it.each(requiredFields)('should hide the %s error once the field is valid', async (field) => {
+            const control = fixture.nativeElement.querySelector(`[name="${field}"]`) as
+                HTMLInputElement | HTMLSelectElement;
+            control.value = field === 'country' ? 'US' : 'x';
+            control.dispatchEvent(new Event(field === 'country' ? 'change' : 'input'));
+            control.dispatchEvent(new Event('blur'));
+            fixture.detectChanges();
+            await fixture.whenStable();
+            fixture.detectChanges();
+
+            expect(errorFor(field)).toBeFalsy();
+        });
     });
 });
