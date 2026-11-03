@@ -34,13 +34,13 @@
             @for (item of cart.products(); track item) {
               <tr class="cart-row">
                 <td>
-                  <div class="item-name">{{item.name}}</div>
+                  <div class="item-name">{{ item.name }}</div>
                 </td>
                 <td class="text-center">
-                  <span class="qty-badge">{{item.count}}</span>
+                  <span class="qty-badge">{{ item.count }}</span>
                 </td>
-                <td class="text-right price-cell">{{item.price | currency}}</td>
-                <td class="text-right total-cell">{{(item.price * item.count) | currency}}</td>
+                <td class="text-right price-cell">{{ item.price | currency }}</td>
+                <td class="text-right total-cell">{{ item.price * item.count | currency }}</td>
                 <td class="text-center">
                   <button (click)="remove(item.id)" class="btn-icon remove-btn" title="Remove Item">
                     ✕
@@ -54,7 +54,7 @@
       <div class="checkout-summary">
         <div class="summary-row grand-total">
           <span>Total Amount:</span>
-          <span class="total-value">{{cart.totalAmount | currency}}</span>
+          <span class="total-value">{{ cart.totalAmount | currency }}</span>
         </div>
         <div class="checkout-actions">
           <a class="btn btn-default" routerLink="/products">Continue Shopping</a>

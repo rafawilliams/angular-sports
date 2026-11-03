@@ -5,9 +5,9 @@ import { PlaceOrderComponent } from './components/place-order/place-order.compon
 import { ThankYouComponent } from './components/thank-you/thank-you.component';
 
 export const routes: Routes = [
-    { path: 'products', component: ProductListComponent },
-    { path: 'checkout', component: CheckoutComponent },
-    { path: 'placeorder', component: PlaceOrderComponent },
-    { path: 'complete', component: ThankYouComponent },
-    { path: '**', redirectTo: '/products' }
+  { path: 'products', component: ProductListComponent },
+  { path: 'checkout', component: CheckoutComponent },
+  { path: 'placeorder', component: PlaceOrderComponent },
+  { path: 'complete', component: ThankYouComponent },
+  { path: '**', redirectTo: '/products' },
 ];

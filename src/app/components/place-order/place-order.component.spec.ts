@@ -6,256 +6,258 @@ import { ProductService, Order } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 
 const validOrder: Partial<Order> = {
-    name: 'John Doe',
-    street: '123 Main St',
-    city: 'New York',
-    state: 'NY',
-    zip: '10001',
-    country: 'US',
-    giftwrap: false,
+  name: 'John Doe',
+  street: '123 Main St',
+  city: 'New York',
+  state: 'NY',
+  zip: '10001',
+  country: 'US',
+  giftwrap: false,
 };
 
 describe('PlaceOrderComponent', () => {
-    let component: PlaceOrderComponent;
-    let fixture: ComponentFixture<PlaceOrderComponent>;
-    let productServiceSpy: { sendOrder: ReturnType<typeof vi.fn>; getProducts: ReturnType<typeof vi.fn> };
-    let cartService: CartService;
-    let router: Router;
-    let navigateSpy: ReturnType<typeof vi.spyOn>;
+  let component: PlaceOrderComponent;
+  let fixture: ComponentFixture<PlaceOrderComponent>;
+  let productServiceSpy: {
+    sendOrder: ReturnType<typeof vi.fn>;
+    getProducts: ReturnType<typeof vi.fn>;
+  };
+  let cartService: CartService;
+  let router: Router;
+  let navigateSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(async () => {
+    productServiceSpy = {
+      getProducts: vi.fn().mockReturnValue(of([])),
+      sendOrder: vi.fn().mockReturnValue(of({ id: 'order-123' })),
+    };
+
+    await TestBed.configureTestingModule({
+      imports: [PlaceOrderComponent],
+      providers: [provideRouter([]), { provide: ProductService, useValue: productServiceSpy }],
+    }).compileComponents();
+
+    cartService = TestBed.inject(CartService);
+    router = TestBed.inject(Router);
+    // Prevent unhandled rejections from navigateByUrl when routes are not registered
+    navigateSpy = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+    fixture = TestBed.createComponent(PlaceOrderComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  describe('initial state', () => {
+    it('should have an empty order model on creation', () => {
+      expect(component.order.name).toBe('');
+      expect(component.order.street).toBe('');
+      expect(component.order.city).toBe('');
+      expect(component.order.state).toBe('');
+      expect(component.order.zip).toBe('');
+      expect(component.order.country).toBe('');
+      expect(component.order.giftwrap).toBe(false);
+    });
+
+    it('should have submitted as false initially', () => {
+      expect(component.submitted).toBe(false);
+    });
+
+    it('should have no orderError initially', () => {
+      expect(component.orderError).toBeNull();
+    });
+  });
+
+  describe('sendOrder – success path', () => {
+    beforeEach(() => {
+      Object.assign(component.order, validOrder);
+      cartService.addProduct('1', 'Soccer Ball', 20);
+    });
+
+    it('should call productService.sendOrder', () => {
+      component.sendOrder();
+      expect(productServiceSpy.sendOrder).toHaveBeenCalledOnce();
+    });
+
+    it('should attach the current cart products to the order before sending', () => {
+      component.sendOrder();
+      const sentOrder: Order = productServiceSpy.sendOrder.mock.calls[0][0];
+      expect(sentOrder.products).toHaveLength(1);
+      expect(sentOrder.products[0].name).toBe('Soccer Ball');
+    });
+
+    it('should set submitted to true while processing', () => {
+      // submitted becomes true before the async response
+      productServiceSpy.sendOrder.mockReturnValue(of({}));
+      component.sendOrder();
+      // After a synchronous observable completes, submitted may be reset—
+      // we verify it was set by checking the call side-effects instead
+      expect(productServiceSpy.sendOrder).toHaveBeenCalled();
+    });
+
+    it('should clear the cart after a successful order', () => {
+      component.sendOrder();
+      expect(cartService.itemCount).toBe(0);
+    });
+
+    it('should navigate to /complete after a successful order', async () => {
+      component.sendOrder();
+      expect(navigateSpy).toHaveBeenCalledWith('/complete');
+    });
+
+    it('should keep orderError as null on success', () => {
+      component.sendOrder();
+      expect(component.orderError).toBeNull();
+    });
+  });
+
+  describe('sendOrder – error path', () => {
+    beforeEach(() => {
+      Object.assign(component.order, validOrder);
+    });
+
+    it('should set orderError when the API call fails', () => {
+      const apiError = { status: 500, message: 'Internal Server Error' };
+      productServiceSpy.sendOrder.mockReturnValue(throwError(() => apiError));
+
+      component.sendOrder();
+
+      expect(component.orderError).toEqual(apiError);
+    });
+
+    it('should reset submitted to false on error', () => {
+      productServiceSpy.sendOrder.mockReturnValue(throwError(() => new Error('fail')));
+
+      component.sendOrder();
+
+      expect(component.submitted).toBe(false);
+    });
+
+    it('should not clear the cart when the order fails', () => {
+      cartService.addProduct('1', 'Soccer Ball', 20);
+      productServiceSpy.sendOrder.mockReturnValue(throwError(() => new Error('fail')));
+
+      component.sendOrder();
+
+      expect(cartService.itemCount).toBe(1);
+    });
+
+    it('should not navigate on error', () => {
+      productServiceSpy.sendOrder.mockReturnValue(throwError(() => new Error('fail')));
+
+      component.sendOrder();
+
+      expect(navigateSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('template rendering', () => {
+    it('should render the order form', () => {
+      const form = fixture.nativeElement.querySelector('form');
+      expect(form).toBeTruthy();
+    });
+
+    it('should display the error alert when orderError is set', () => {
+      component.orderError = { message: 'Something went wrong' };
+      fixture.detectChanges();
+      const alert = fixture.nativeElement.querySelector('.alert-danger');
+      expect(alert).toBeTruthy();
+    });
+
+    it('should not display the error alert when orderError is null', () => {
+      component.orderError = null;
+      fixture.detectChanges();
+      const alert = fixture.nativeElement.querySelector('.alert-danger');
+      expect(alert).toBeFalsy();
+    });
+
+    it('should show the lock icon only while the order is not submitted', () => {
+      expect(fixture.nativeElement.querySelector('.lock-icon')).toBeTruthy();
+
+      component.submitted = true;
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.lock-icon')).toBeFalsy();
+    });
+  });
+
+  describe('accessibility', () => {
+    const fields = ['name', 'street', 'city', 'state', 'zip', 'country'];
+
+    const componentStyles = (): string =>
+      Array.from(document.head.querySelectorAll('style'))
+        .map((style) => style.textContent ?? '')
+        .join('\n');
+
+    it('should load the component stylesheet', () => {
+      expect(componentStyles()).toContain('.custom-checkbox');
+    });
+
+    it('should show keyboard focus on the custom gift-wrap checkbox', () => {
+      const giftwrap = fixture.nativeElement.querySelector('[name="giftwrap"]') as HTMLInputElement;
+
+      expect(giftwrap.type).toBe('checkbox');
+      // Emulated encapsulation inserts [_ngcontent-*] attributes inside the selector.
+      expect(componentStyles()).toMatch(
+        /\.custom-checkbox[^{]*input[^{]*:focus-visible[^{]*~[^{]*\.checkmark/,
+      );
+    });
+
+    it.each(fields)('should associate a label with the %s control', (field) => {
+      const host: HTMLElement = fixture.nativeElement;
+      const control = host.querySelector(`[name="${field}"]`) as HTMLElement;
+      const label = host.querySelector(`label[for="${control.id}"]`);
+
+      expect(control.id).toBe(`order-${field}`);
+      expect(label).toBeTruthy();
+      expect(label?.textContent?.trim()).not.toBe('');
+    });
+  });
+
+  describe('field validation messages', () => {
+    const requiredFields: [string, string][] = [
+      ['name', 'Please enter a name'],
+      ['street', 'Please enter a street address'],
+      ['city', 'Required'],
+      ['state', 'Required'],
+      ['zip', 'Required'],
+      ['country', 'Required'],
+    ];
+
+    const errorFor = (field: string): HTMLElement | null => {
+      const control = fixture.nativeElement.querySelector(`[name="${field}"]`) as HTMLElement;
+      return control.closest('.form-group')?.querySelector(':scope > .error-msg') ?? null;
+    };
 
     beforeEach(async () => {
-        productServiceSpy = {
-            getProducts: vi.fn().mockReturnValue(of([])),
-            sendOrder: vi.fn().mockReturnValue(of({ id: 'order-123' })),
-        };
-
-        await TestBed.configureTestingModule({
-            imports: [PlaceOrderComponent],
-            providers: [
-                provideRouter([]),
-                { provide: ProductService, useValue: productServiceSpy },
-            ],
-        }).compileComponents();
-
-        cartService = TestBed.inject(CartService);
-        router = TestBed.inject(Router);
-        // Prevent unhandled rejections from navigateByUrl when routes are not registered
-        navigateSpy = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
-        fixture = TestBed.createComponent(PlaceOrderComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
     });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
+    it.each(requiredFields)('should not show the %s error before the field is touched', (field) => {
+      expect(errorFor(field)).toBeFalsy();
     });
 
-    describe('initial state', () => {
-        it('should have an empty order model on creation', () => {
-            expect(component.order.name).toBe('');
-            expect(component.order.street).toBe('');
-            expect(component.order.city).toBe('');
-            expect(component.order.state).toBe('');
-            expect(component.order.zip).toBe('');
-            expect(component.order.country).toBe('');
-            expect(component.order.giftwrap).toBe(false);
-        });
+    it.each(requiredFields)('should show the %s error when touched and empty', (field, message) => {
+      const control = fixture.nativeElement.querySelector(`[name="${field}"]`) as HTMLElement;
+      control.dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
 
-        it('should have submitted as false initially', () => {
-            expect(component.submitted).toBe(false);
-        });
-
-        it('should have no orderError initially', () => {
-            expect(component.orderError).toBeNull();
-        });
+      expect(errorFor(field)?.textContent?.trim()).toBe(message);
     });
 
-    describe('sendOrder – success path', () => {
-        beforeEach(() => {
-            Object.assign(component.order, validOrder);
-            cartService.addProduct('1', 'Soccer Ball', 20);
-        });
+    it.each(requiredFields)('should hide the %s error once the field is valid', async (field) => {
+      const control = fixture.nativeElement.querySelector(`[name="${field}"]`) as
+        HTMLInputElement | HTMLSelectElement;
+      control.value = field === 'country' ? 'US' : 'x';
+      control.dispatchEvent(new Event(field === 'country' ? 'change' : 'input'));
+      control.dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
 
-        it('should call productService.sendOrder', () => {
-            component.sendOrder();
-            expect(productServiceSpy.sendOrder).toHaveBeenCalledOnce();
-        });
-
-        it('should attach the current cart products to the order before sending', () => {
-            component.sendOrder();
-            const sentOrder: Order = productServiceSpy.sendOrder.mock.calls[0][0];
-            expect(sentOrder.products).toHaveLength(1);
-            expect(sentOrder.products[0].name).toBe('Soccer Ball');
-        });
-
-        it('should set submitted to true while processing', () => {
-            // submitted becomes true before the async response
-            productServiceSpy.sendOrder.mockReturnValue(of({}));
-            component.sendOrder();
-            // After a synchronous observable completes, submitted may be reset—
-            // we verify it was set by checking the call side-effects instead
-            expect(productServiceSpy.sendOrder).toHaveBeenCalled();
-        });
-
-        it('should clear the cart after a successful order', () => {
-            component.sendOrder();
-            expect(cartService.itemCount).toBe(0);
-        });
-
-        it('should navigate to /complete after a successful order', async () => {
-            component.sendOrder();
-            expect(navigateSpy).toHaveBeenCalledWith('/complete');
-        });
-
-        it('should keep orderError as null on success', () => {
-            component.sendOrder();
-            expect(component.orderError).toBeNull();
-        });
+      expect(errorFor(field)).toBeFalsy();
     });
-
-    describe('sendOrder – error path', () => {
-        beforeEach(() => {
-            Object.assign(component.order, validOrder);
-        });
-
-        it('should set orderError when the API call fails', () => {
-            const apiError = { status: 500, message: 'Internal Server Error' };
-            productServiceSpy.sendOrder.mockReturnValue(throwError(() => apiError));
-
-            component.sendOrder();
-
-            expect(component.orderError).toEqual(apiError);
-        });
-
-        it('should reset submitted to false on error', () => {
-            productServiceSpy.sendOrder.mockReturnValue(throwError(() => new Error('fail')));
-
-            component.sendOrder();
-
-            expect(component.submitted).toBe(false);
-        });
-
-        it('should not clear the cart when the order fails', () => {
-            cartService.addProduct('1', 'Soccer Ball', 20);
-            productServiceSpy.sendOrder.mockReturnValue(throwError(() => new Error('fail')));
-
-            component.sendOrder();
-
-            expect(cartService.itemCount).toBe(1);
-        });
-
-        it('should not navigate on error', () => {
-            productServiceSpy.sendOrder.mockReturnValue(throwError(() => new Error('fail')));
-
-            component.sendOrder();
-
-            expect(navigateSpy).not.toHaveBeenCalled();
-        });
-    });
-
-    describe('template rendering', () => {
-        it('should render the order form', () => {
-            const form = fixture.nativeElement.querySelector('form');
-            expect(form).toBeTruthy();
-        });
-
-        it('should display the error alert when orderError is set', () => {
-            component.orderError = { message: 'Something went wrong' };
-            fixture.detectChanges();
-            const alert = fixture.nativeElement.querySelector('.alert-danger');
-            expect(alert).toBeTruthy();
-        });
-
-        it('should not display the error alert when orderError is null', () => {
-            component.orderError = null;
-            fixture.detectChanges();
-            const alert = fixture.nativeElement.querySelector('.alert-danger');
-            expect(alert).toBeFalsy();
-        });
-
-        it('should show the lock icon only while the order is not submitted', () => {
-            expect(fixture.nativeElement.querySelector('.lock-icon')).toBeTruthy();
-
-            component.submitted = true;
-            fixture.detectChanges();
-            expect(fixture.nativeElement.querySelector('.lock-icon')).toBeFalsy();
-        });
-    });
-
-    describe('accessibility', () => {
-        const fields = ['name', 'street', 'city', 'state', 'zip', 'country'];
-
-        const componentStyles = (): string =>
-            Array.from(document.head.querySelectorAll('style'))
-                .map((style) => style.textContent ?? '')
-                .join('\n');
-
-        it('should load the component stylesheet', () => {
-            expect(componentStyles()).toContain('.custom-checkbox');
-        });
-
-        it('should show keyboard focus on the custom gift-wrap checkbox', () => {
-            const giftwrap = fixture.nativeElement.querySelector('[name="giftwrap"]') as HTMLInputElement;
-
-            expect(giftwrap.type).toBe('checkbox');
-            // Emulated encapsulation inserts [_ngcontent-*] attributes inside the selector.
-            expect(componentStyles()).toMatch(/\.custom-checkbox[^{]*input[^{]*:focus-visible[^{]*~[^{]*\.checkmark/);
-        });
-
-        it.each(fields)('should associate a label with the %s control', (field) => {
-            const host: HTMLElement = fixture.nativeElement;
-            const control = host.querySelector(`[name="${field}"]`) as HTMLElement;
-            const label = host.querySelector(`label[for="${control.id}"]`);
-
-            expect(control.id).toBe(`order-${field}`);
-            expect(label).toBeTruthy();
-            expect(label?.textContent?.trim()).not.toBe('');
-        });
-    });
-
-    describe('field validation messages', () => {
-        const requiredFields: [string, string][] = [
-            ['name', 'Please enter a name'],
-            ['street', 'Please enter a street address'],
-            ['city', 'Required'],
-            ['state', 'Required'],
-            ['zip', 'Required'],
-            ['country', 'Required'],
-        ];
-
-        const errorFor = (field: string): HTMLElement | null => {
-            const control = fixture.nativeElement.querySelector(`[name="${field}"]`) as HTMLElement;
-            return control.closest('.form-group')?.querySelector(':scope > .error-msg') ?? null;
-        };
-
-        beforeEach(async () => {
-            await fixture.whenStable();
-            fixture.detectChanges();
-        });
-
-        it.each(requiredFields)('should not show the %s error before the field is touched', (field) => {
-            expect(errorFor(field)).toBeFalsy();
-        });
-
-        it.each(requiredFields)('should show the %s error when touched and empty', (field, message) => {
-            const control = fixture.nativeElement.querySelector(`[name="${field}"]`) as HTMLElement;
-            control.dispatchEvent(new Event('blur'));
-            fixture.detectChanges();
-
-            expect(errorFor(field)?.textContent?.trim()).toBe(message);
-        });
-
-        it.each(requiredFields)('should hide the %s error once the field is valid', async (field) => {
-            const control = fixture.nativeElement.querySelector(`[name="${field}"]`) as
-                HTMLInputElement | HTMLSelectElement;
-            control.value = field === 'country' ? 'US' : 'x';
-            control.dispatchEvent(new Event(field === 'country' ? 'change' : 'input'));
-            control.dispatchEvent(new Event('blur'));
-            fixture.detectChanges();
-            await fixture.whenStable();
-            fixture.detectChanges();
-
-            expect(errorFor(field)).toBeFalsy();
-        });
-    });
+  });
 });
